@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>GsVehicleSelling</title>
+
+    <!-- BOOTSTRAP STYLES-->
+    <link href="/css/bootstrap.css" rel="stylesheet"/>
+    <!-- FONTAWESOME STYLES-->
+    <link href="/css/font-awesome.css" rel="stylesheet"/>
+    <!-- GOOGLE FONTS-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+
+</head>
+<body style="background-color: #E2E2E2;">
+<div class="container">
+    <div class="row text-center " style="padding-top:100px;">
+        <div class="col-md-12">
+            <h1 class="">注册</h1>
+        </div>
+    </div>
+    <div class="row ">
+
+        <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
+
+            <div class="panel-body">
+                <form role="form" method="post" th:action="@{/adduser}" th:method="post">
+                    <hr/>
+                    <!--<h5>登录</h5>-->
+                    <br/>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                        <input type="text" class="form-control" placeholder="昵称"
+                               required="required" name="nickname"/>
+                    </div>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                        <input type="password" class="form-control" placeholder="密码"
+                               required="required" name="password"/>
+                    </div>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                        <input type="password" class="form-control" placeholder="确认密码"
+                               required="required" name="password2"/>
+                    </div>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                        <input type="tel" class="form-control" placeholder="电话"
+                               required="required" name="tel"/>
+                    </div>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-birthday-cake"></i></span>
+                        <input type="date" class="form-control" placeholder="生日"
+                               required="required" name="birthday"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary pull-right" />
+                        <!--<span class="pull-right">-->
+                        <!--<a href="index.html">Forget password ? </a>-->
+                        <!--</span>-->
+                    </div>
+                    <!--<a href="index.html" class="btn btn-primary ">Login Now</a>-->
+
+                    <hr/>
+                    已有账号? <a href="/login"> 点击登录 </a>
+
+                </form>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+</body>
+</html>

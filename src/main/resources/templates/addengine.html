@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>GsVehicleSelling</title>
+
+    <!-- BOOTSTRAP STYLES-->
+    <link href="/css/bootstrap.css" rel="stylesheet"/>
+    <!-- FONTAWESOME STYLES-->
+    <link href="/css/font-awesome.css" rel="stylesheet"/>
+    <!--CUSTOM BASIC STYLES-->
+    <link href="/css/basic.css" rel="stylesheet" />
+    <!--CUSTOM MAIN STYLES-->
+    <link href="/css/custom.css" rel="stylesheet" />
+    <!--fileUpload-->
+    <link href="/css/bootstrap-fileupload.min.css" rel="stylesheet">
+    <!-- GOOGLE FONTS-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <!--dataTable CSS-->
+    <link href="http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+
+</head>
+<body>
+
+<div id="wrapper">
+    <nav class="navbar navbar-default navbar-cls-top navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">GsVehicle</a>
+        </div>
+
+        <div class="header-right">
+
+            <a class="btn btn-default" th:href="@{/logout}"><span class="fa fa-sign-out"></span> 退出登录</a>
+
+        </div>
+    </nav>
+    <!-- /. NAV TOP  -->
+    <nav class="navbar-default navbar-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav" id="main-menu">
+                <li>
+                    <div class="user-img-div">
+                        <div class="inner-text" style="text-align: center">
+                            <br />
+                            欢迎！系统用户：
+                            <br />
+                            <p th:text="${session.nickName}"/>
+                            <br />
+                        </div>
+                    </div>
+
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-desktop "></i>信息录入 <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse in" style="">
+                        <li>
+                            <a href="#"><i class="fa fa-car"></i>车辆信息<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level collapse">
+                                <li>
+                                    <a th:href="@{/admin/vehiclelist}"><i class="fa fa-table"></i>车辆列表</a>
+                                </li>
+                                <li class="">
+                                    <a th:href="@{/admin/addvehicle}"><i class="fa fa-pencil"></i>录入车辆</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-car"></i>发动机信息<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level collapse in">
+                                <li>
+                                    <a th:href="@{/admin/enginelist}"><i class="fa fa-table"></i>发动机列表</a>
+                                </li>
+                                <li class="active">
+                                    <a th:href="@{/admin/addengine}" style="background: black"><i class="fa fa-pencil"></i>录入发动机</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-car"></i>变速箱信息<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a th:href="@{/admin/gearboxlist}"><i class="fa fa-table"></i>变速箱列表</a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/admin/addgearbox}"><i class="fa fa-pencil"></i>录入变速箱</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-car"></i>驱动信息<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a th:href="@{/admin/drivingmodellist}"><i class="fa fa-table"></i>驱动列表</a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/admin/adddrivingmodel}"><i class="fa fa-pencil"></i>录入驱动</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-car"></i>轮胎信息<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a th:href="@{/admin/tyrelist}"><i class="fa fa-table"></i>轮胎列表</a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/admin/addtyre}"><i class="fa fa-pencil"></i>录入轮胎</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    </ul>
+
+                </li>
+                <li>
+                    <a th:href="@{/admin/orderlist}"><i class="fa fa-table"></i>订单信息 </a>
+                </li>
+                <li class="">
+                    <a th:href="@{/admin/home}"><i class="fa fa-user"></i>用户管理 </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </nav>
+    <!-- /. NAV SIDE  -->
+    <div id="page-wrapper" style="margin-top: 75px">
+        <div id="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-head-line">发动机录入</h1>
+                </div>
+            </div>
+            <!-- /. ROW  -->
+            <!--<div class="row">-->
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        发动机录入
+                        <!--<small style="color: #5f5f5f">(请输入收件人信息)</small>-->
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-3 col-md-offset-3" th:action="@{'/admin/addengine'}" th:method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label>  型号 : </label>
+                                <input class="form-control" type="text"  required="required" name="type">
+                            </div>
+                            <div class="form-group">
+                                <label>  排量 : </label>
+                                <input class="form-control" type="text"  required="required" name="displacement">
+                            </div>
+                            <div class="form-group">
+                                <label>  进气方式 : </label>
+                                <input class="form-control" type="text"  required="required" name="intake">
+                            </div>
+                            <div class="form-group">
+                                <label>  材料 : </label>
+                                <input class="form-control" type="text"  required="required" name="material">
+                            </div>
+                            <div class="form-group">
+                                <label>  价格 ( 元 ) : </label>
+                                <input class="form-control" type="text" required="required" name="price">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-4">图片上传</label>
+                                <div class="">
+                                    <div class="fileupload fileupload-new" data-provides="fileupload">
+                                        <div class="fileupload-preview thumbnail" style="width: 200px; height: 150px;"></div>
+                                        <div>
+                                            <span class="btn btn-file btn-success">
+                                                <span class="fileupload-new">选择图片</span>
+                                                <span class="fileupload-exists">重新选择</span>
+                                                <input type="file" required="required" name="image"></span>
+                                            <a href="#" class="btn btn-danger fileupload-exists" data-dismiss="fileupload">取消上传</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-info pull-right btn-block">录入</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /. PAGE INNER  -->
+</div>
+<!-- /. PAGE WRAPPER  -->
+</div>
+
+<div id="footer-sec">
+    &copy; 2018 GsVehicleSelling
+</div>
+<!-- /. FOOTER  -->
+<!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+<!-- JQUERY SCRIPTS -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.4.js"></script>
+<!-- BOOTSTRAP SCRIPTS -->
+<script src="/js/bootstrap.js"></script>
+<!-- PAGE LEVEL SCRIPTS -->
+<script src="/js/bootstrap-fileupload.js"></script>
+<!-- METISMENU SCRIPTS -->
+<script src="/js/jquery.metisMenu.js"></script>
+<!-- CUSTOM SCRIPTS -->
+<script src="/js/custom.js"></script>
+
+<script type="text/javascript" src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+</body>
+</html>

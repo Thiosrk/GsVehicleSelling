@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>GsVehicleSelling</title>
+
+    <!-- BOOTSTRAP STYLES-->
+    <link href="/css/bootstrap.css" rel="stylesheet"/>
+    <!-- FONTAWESOME STYLES-->
+    <link href="/css/font-awesome.css" rel="stylesheet"/>
+    <!--CUSTOM BASIC STYLES-->
+    <link href="/css/basic.css" rel="stylesheet" />
+    <!--CUSTOM MAIN STYLES-->
+    <link href="/css/custom.css" rel="stylesheet" />
+    <!-- GOOGLE FONTS-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <!--dataTable CSS-->
+    <link href="http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+
+    <!--获取当前时间-->
+    <script>
+        window.onload = function(){
+            function getDate(){
+                // debugger;
+                var today = new Date();
+                var month = today.getMonth() + 1;
+                var strDate = today.getDate();
+                if (month >= 1 && month <= 9) {
+                    month = "0" + month;
+                }
+                if (strDate >= 0 && strDate <= 9) {
+                    strDate = "0" + strDate;
+                }
+                var date;
+                date = (today.getFullYear()) +"-" + month + "-" + strDate;
+                // + "-" + today.toLocaleTimeString()
+                return date;
+            }
+            window.setInterval(function(){
+                document.getElementById("getTime").setAttribute("value",getDate());
+            }, 0);
+        }
+    </script>
+</head>
+<body>
+
+<div id="wrapper">
+    <nav class="navbar navbar-default navbar-cls-top navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">GsVehicle</a>
+        </div>
+
+        <div class="header-right">
+
+            <div class="btn-group">
+                <button  class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                    <span class="glyphicon glyphicon-user"></span>
+                    我的
+                    <span class="caret" >
+
+                    </span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{'/user/orderlist/'+${session.userID}}"><span class="fa fa-table"></span> 我的订单</a></li>
+                    <li><a th:href="@{'/user/info/'+${session.userID}}"><span class="fa fa-info-circle"></span> 我的信息</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a th:href="@{/logout}"><span class="fa fa-sign-out"></span> 退出登录</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+    <!-- /. NAV TOP  -->
+    <nav class="navbar-default navbar-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav" id="main-menu">
+                <li>
+                    <div class="user-img-div">
+                        <div class="inner-text" style="text-align: center">
+                            <br />
+                            欢迎！用户：
+                            <br />
+                            <p th:text="${session.nickName}"/>
+                            <br />
+                        </div>
+                    </div>
+
+                </li>
+                <li class="" >
+                    <a th:href="@{/user/home}" ><i class="fa fa-car "></i>车辆信息 </a>
+                </li>
+                <li>
+                    <a th:href="@{/user/components}"><i class="fa fa-list-ul "></i>配件信息 </a>
+                </li>
+                <li>
+                    <a th:href="@{/user/vehicle}"><i class="fa fa-list-ul "></i>零部件图 </a>
+                </li>
+                <li>
+                    <a th:href="@{'/user/orderlist/'+${session.userID}}"><i class="fa fa-table"></i> 我的订单</a>
+                </li>
+                <li>
+                    <a th:href="@{'/user/info/'+${session.userID}}"><i class="fa fa-info-circle"></i> 我的信息</a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </nav>
+    <!-- /. NAV SIDE  -->
+    <div id="page-wrapper" style="margin-top: 75px">
+        <div id="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-head-line">填写订单</h1>
+                </div>
+            </div>
+            <!-- /. ROW  -->
+            <!--<div class="row">-->
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        订单信息     <small style="color: #5f5f5f">(请输入收件人信息)</small>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-3 col-md-offset-3" th:action="@{/user/order}" th:method="post" th:switch="${goods.type}">
+
+                            <div class="form-group">
+                                <label>  订单日期 : </label>
+                                <input class="form-control" type="date" id="getTime" readonly="readonly" name="date" >
+                            </div>
+                            <div th:case="'vehicle'">
+                                <div class="hide">
+                                    <input class="form-control" type="text" th:value="${goods.vehicle.id}" readonly="readonly" name="goodsid">
+                                </div>
+                                <div class="form-group">
+                                    <label>  物品种类 : </label>
+                                    <input class="form-control" type="text" value="汽车"  readonly="readonly" name="goodstype">
+                                </div>
+                                <div class="form-group">
+                                    <label>  物品名称 : </label>
+                                    <input class="form-control" type="text" th:value="${goods.vehicle.model}" readonly="readonly" name="name">
+                                </div>
+                                <div class="form-group">
+                                    <label>  订单价格（万元） : </label>
+                                    <input class="form-control" type="text" th:value="${goods.vehicle.price}" readonly="readonly" name="price">
+                                </div>
+                            </div>
+                            <div th:case="'engine'">
+                                <div class="hide">
+                                    <input class="form-control" type="text" th:value="${goods.engine.id}" readonly="readonly" name="goodsid">
+                                </div>
+                                <div class="form-group">
+                                    <label>  物品种类 : </label>
+                                    <input class="form-control" type="text" value="发动机" readonly="readonly" name="goodstype">
+                                </div>
+                                <div class="form-group">
+                                    <label>  物品名称 : </label>
+                                    <input class="form-control" type="text" th:value="${goods.engine.type}" readonly="readonly" name="name">
+                                </div>
+                                <div class="form-group">
+                                    <label>  订单价格（元） : </label>
+                                    <input class="form-control" type="text" th:value="${goods.engine.price}" readonly="readonly" name="price">
+                                </div>
+                            </div>
+                            <div th:case="'gearbox'">
+                                <div class="hide">
+                                    <input class="form-control" type="text" th:value="${goods.gearbox.id}" readonly="readonly" name="goodsid">
+                                </div>
+                                <div class="form-group">
+                                    <label>  物品种类 : </label>
+                                    <input class="form-control" type="text" value="变速箱" readonly="readonly" name="goodstype">
+                                </div>
+                                <div class="form-group">
+
+                                    <label>  物品名称 : </label>
+                                    <input class="form-control" type="text" th:value="${goods.gearbox.type}" readonly="readonly" name="name">
+                                </div>
+                                <div class="form-group">
+                                    <label>  订单价格（元） : </label>
+                                    <input class="form-control" type="text" th:value="${goods.gearbox.price}" readonly="readonly" name="price">
+                                </div>
+                            </div>
+                            <div th:case="'tyre'">
+                                <div class="hide">
+                                    <input class="form-control" type="text" th:value="${goods.tyre.id}" readonly="readonly" name="goodsid">
+                                </div>
+                                <div class="form-group">
+                                    <label>  物品种类 : </label>
+                                    <input class="form-control" type="text" value="轮胎" readonly="readonly" name="goodstype">
+                                </div>
+                                <div class="form-group">
+
+                                    <label>  物品名称 : </label>
+                                    <input class="form-control" type="text" th:value="${goods.tyre.brand}" readonly="readonly" name="name">
+                                </div>
+                                <div class="form-group">
+                                    <label>  订单价格（元） : </label>
+                                    <input class="form-control" type="text" th:value="${goods.tyre.price}" readonly="readonly" name="price">
+                                </div>
+                            </div>
+                            <div th:case="'components'">
+                                <div class="hide">
+                                    <input class="form-control" type="text" th:value="${goods.components.id}" readonly="readonly" name="goodsid">
+                                </div>
+                                <div class="form-group">
+                                    <label>  物品种类 : </label>
+                                    <input class="form-control" type="text" value="零部件" readonly="readonly" name="goodstype">
+                                </div>
+                                <div class="form-group">
+
+                                    <label>  物品名称 : </label>
+                                    <input class="form-control" type="text" th:value="${goods.components.name}" readonly="readonly" name="name">
+                                </div>
+                                <div class="form-group">
+                                    <label>  订单价格（元） : </label>
+                                    <input class="form-control" type="text" th:value="${goods.components.price}" readonly="readonly" name="price">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>  收件人姓名：</label>
+                                <input class="form-control" type="text" required="required" name="consigneename">
+                            </div>
+                            <div class="form-group">
+                                <label>  收件人电话：</label>
+                                <input class="form-control" type="tel" required="required" name="consigneetel">
+                            </div>
+                            <div class="form-group">
+                                <label>  收件人地址：</label>
+                                <input class="form-control" type="text" required="required" name="consigneeaddress">
+                            </div>
+                            <button type="submit" class="btn btn-info pull-right">确认</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /. PAGE INNER  -->
+</div>
+<!-- /. PAGE WRAPPER  -->
+</div>
+
+<div id="footer-sec">
+    &copy; 2018 GsVehicleSelling
+</div>
+<!-- /. FOOTER  -->
+<!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+<!-- JQUERY SCRIPTS -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.4.js"></script>
+<!-- BOOTSTRAP SCRIPTS -->
+<script src="/js/bootstrap.js"></script>
+<!-- METISMENU SCRIPTS -->
+<script src="/js/jquery.metisMenu.js"></script>
+<!-- CUSTOM SCRIPTS -->
+<script src="/js/custom.js"></script>
+
+<script type="text/javascript" src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+</body>
+</html>

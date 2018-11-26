@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>GsVehicleSelling</title>
+
+    <!-- BOOTSTRAP STYLES-->
+    <link href="/css/bootstrap.css" rel="stylesheet"/>
+    <!-- FONTAWESOME STYLES-->
+    <link href="/css/font-awesome.css" rel="stylesheet"/>
+    <!--CUSTOM BASIC STYLES-->
+    <link href="/css/basic.css" rel="stylesheet" />
+    <!--CUSTOM MAIN STYLES-->
+    <link href="/css/custom.css" rel="stylesheet" />
+    <!-- GOOGLE FONTS-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <!--dataTable CSS-->
+    <link href="http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+
+</head>
+<body>
+<div id="wrapper">
+    <nav class="navbar navbar-default navbar-cls-top navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">GsVehicle</a>
+        </div>
+
+        <div class="header-right">
+
+            <div class="btn-group">
+                <!--<button  class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >-->
+                    <!--我的-->
+                    <!--<span class="caret" >-->
+
+                    <!--</span>-->
+                <!--</button>-->
+                    <!--<li><a th:href="@{'/user/orderlist/'+${session.userID}}"><span class="fa fa-table"></span> 我的订单</a></li>-->
+                    <!--<li><a th:href="@{'/user/info/'+${session.userID}}"><span class="fa fa-info-circle"></span> 我的信息</a></li>-->
+                    <!--<li role="separator" class="divider"></li>-->
+                    <!--<li><a th:href="@{/logout}"><span class="fa fa-sign-out"></span> 退出登录</a></li>-->
+                    <a class="btn btn-default" th:href="@{/login}"><span class="fa fa-sign-in"></span> 登录</a>
+                    <a class="btn btn-default" th:href="@{/register}"><span class="fa fa-"></span> 注册</a>
+                    <!--<a th:href="@{/home}"><span class="fa fa-sign-in"></span> 登录</a>-->
+            </div>
+
+        </div>
+    </nav>
+    <!-- /. NAV TOP  -->
+    <nav class="navbar-default navbar-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav" id="main-menu">
+                <li>
+                    <div class="user-img-div">
+                        <!--<img src="/img/user.png" class="img-thumbnail" />-->
+
+                        <div class="inner-text" style="text-align: center">
+                            <br />
+                            欢迎！未登录用户 :
+                            <br />
+                            请先登录或注册
+                            <br />
+                            <!--<small>Last Login : 2 Weeks Ago </small>-->
+                        </div>
+                    </div>
+
+                </li>
+
+                <li class="active" >
+                    <a th:href="@{/}" style="background: #000000"><i class="fa fa-car "></i>车辆信息 </a>
+                </li>
+                <li class="" >
+                    <a th:href="@{/components}"><i class="fa fa-list-ul "></i>配件信息 </a>
+                </li>
+
+
+            </ul>
+
+        </div>
+
+    </nav>
+    <!-- /. NAV SIDE  -->
+    <div id="page-wrapper" style="margin-top: 75px">
+        <div id="page-inner" >
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-head-line">汽车列表</h1>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <!--<div class="panel-heading">-->
+                        <!--正在进行中的考试-->
+                        <!--</div>-->
+                        <div class="panel-body">
+
+                            <div class="table-responsive">
+                                <div id="container">
+
+                                    <table id="table_example" class="display">
+                                        <thead class="hide">
+                                        <th><p>汽车列表</p>
+                                        </th>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="vehicle : ${vehicles}" >
+                                            <td>
+                                                <div class="panel-body "  th:id="|flip${vehicle.id}|" onclick="showInfo(this)">
+
+                                                    <div class="col-md-8">
+                                                        <img  th:src="@{'/img/Vehicle/'+${vehicle.image}}"style="width: 90%;height: 90%;">
+                                                    </div>
+
+                                                    <div class="col-md-4" style="margin-top: 10%">
+                                                        <label style="float: contour">  <h3 th:text="${vehicle.model}"></h3></label>
+                                                    </div>
+
+                                                </div>
+                                                <div class="panel-body " th:id="|panel${vehicle.id}|" style="display: none">
+                                                    <div class="col-md-3 col-lg-2" th:id="|engine${vehicle.id}|" data-toggle="popover" data-placement="top" data-trigger="hover">
+                                                        <a>
+                                                            <img th:src="@{'/img/Engine/'+${vehicle.engine.image}}" style="width: 200px;height: 200px;border-radius:100%">
+                                                        </a>
+                                                    </div>
+                                                    <div th:id="|popover_engine${vehicle.id}|" class="hide">
+                                                        <ul class="list-inline ">
+                                                            <li style=""><label ><p th:text="|型号 : ${vehicle.engine.type}|"></p></label></li>
+                                                            <br/>
+                                                            <li class=""><label ><p th:text="|排量 ( L ) : ${vehicle.engine.displacement}|"></p></label></li>
+                                                            <br/>
+                                                            <li class=""><label ><p th:text="|进气方式 : ${vehicle.engine.intake}|"></p></label></li>
+                                                            <br/>
+                                                            <li class=""><label ><p th:text="|材料 : ${vehicle.engine.material}|"></p></label></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-3 col-lg-2"th:id="|gearbox${vehicle.id}|" data-toggle="popover" data-placement="top" data-trigger="hover">
+                                                        <a>
+                                                            <img th:src="@{'/img/Gearbox/'+${vehicle.gearbox.image}}" style="margin-top: 30px;width: 220px;height: 150px;border-radius:100%">
+                                                        </a>
+                                                    </div>
+                                                    <div th:id="|popover_gearbox${vehicle.id}|" class="hide">
+                                                        <ul class="list-inline ">
+                                                            <li style=""><label >变速箱类型 : <p th:text="${vehicle.gearbox.type}"></p></label></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div th:id="|drivingmode${vehicle.id}|" class="col-md-3 col-lg-2" data-toggle="popover" data-placement="top" data-trigger="hover">
+                                                        <a>
+                                                            <img th:src="@{'/img/Drivingmodel/'+${vehicle.drivingmode.image}}" style="margin-top: 30px;width: 220px;height: 150px;border-radius:100%">
+                                                        </a>
+                                                    </div>
+                                                    <div th:id="|popover_drivingmode${vehicle.id}|" class="hide">
+                                                        <ul class="list-inline ">
+                                                            <li style=""><label >驱动 : <p th:text="${vehicle.drivingmode.type}"></p></label></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div th:id="|tyre${vehicle.id}|" class="col-md-3 col-lg-2" data-toggle="popover" data-placement="top" data-trigger="hover">
+                                                        <a>
+                                                            <img th:src="@{'/img/Tyre/'+${vehicle.tyre.image}}" style="width: 220px;height: 220px;border-radius:100%">
+                                                        </a>
+                                                    </div>
+                                                    <div th:id="|popover_tyre${vehicle.id}|" class="hide">
+                                                        <ul class="list-inline ">
+                                                            <li style=""><label >品牌 : <p th:text="${vehicle.tyre.brand}"></p></label></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-12 col-lg-4"style="margin-top: 5%;text-align: center">
+                                                            <div class="text-center">
+                                                                    <p class="col-md-12 price-font">价格 ：</p>
+                                                                    <p class="col-md-12 price-font" th:text="| ${vehicle.price} 万|"></p>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /. PAGE INNER  -->
+    </div>
+    <!-- /. PAGE WRAPPER  -->
+</div>
+<!-- /. WRAPPER  -->
+
+<div id="footer-sec">
+    &copy; 2018 GsVehicleSelling
+</div>
+<!-- /. FOOTER  -->
+<!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+<!-- JQUERY SCRIPTS -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.4.js"></script>
+<!-- BOOTSTRAP SCRIPTS -->
+<script src="/js/bootstrap.js"></script>
+<!-- METISMENU SCRIPTS -->
+<script src="/js/jquery.metisMenu.js"></script>
+<!-- CUSTOM SCRIPTS -->
+<script src="/js/custom.js"></script>
+
+<script type="text/javascript" src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+<!--鼠标选停-->
+<script>
+    $(function () { $("[data-toggle='popover']").each(function () {
+        var element = $(this);
+        var id = element.attr('id');
+        var $p = $("#popover_"+id);
+        element.popover({
+            html : true,
+            title: title(),
+            delay:{show:300, hide:100},
+            content: function() {
+                // return content();
+                return $p.html();
+            }
+    })
+
+    });
+    });
+</script>
+
+<!--显示具体内容-->
+<script>
+    function title() {
+        return '详细参数';
+    }
+    <!--模拟动态加载内容(真实情况可能会跟后台进行ajax交互)-->
+    function content() {
+        // var x;
+        // var vehicles = '${session.vehicles}';
+
+
+        // var vehicle;
+        // for (x in eval(vehicles)){
+        //     var a = eval(x);
+        //     if ('${a.id}' == id)
+        //         vehicle = a;
+        // }
+        // var engine = '${vehicle.engine}';
+        var data = $("<ul><li><span aria-hidden='true' class='icon_globe'></span>&nbsp;<font>粉丝数:</font>7389223</li>" +
+            "<li><span aria-hidden='true' class='icon_piechart'></span>&nbsp;<font>关注:</font>265</li>" +
+            "<li><span aria-hidden='true' class='icon_search_alt'></span>&nbsp;<font>微博:</font>645</li>" +
+            "<li><span aria-hidden='true' class='icon_pens_alt'></span>&nbsp;<font>所在地:</font>台湾</li>" +
+            "</ul>");
+
+        return data;
+    }
+</script>
+
+<!--点击车辆显示详细信息面板-->
+<script>
+    function showInfo(ele){
+        var id = ele.id;
+        // var num,= $(classname.substring(classname.length-1))
+        if (id.search('flip') != -1) {
+            var num =id.substring(id.indexOf('p')+1);
+            var $p = $("#panel"+num);
+            $p.slideToggle("slow");
+        }
+    }
+</script>
+<!--详细信息面板自动隐藏-->
+<script>
+    function getAll() {
+        var objs = document.all;
+        var length1;
+        for (var i = 0; i < objs.length; i++) {
+            var obj = objs[i].tagName;
+            if (obj == "body" || obj == "BODY") {
+                length1 = i+1;
+                break;
+            }
+        }
+        var b_objs = new Array();
+        for (var j = length1; j < objs.length; j++) {
+            b_objs.push(objs[j]);
+        }
+        return b_objs;
+    }
+
+    $(document).bind('click', function(e) {
+        var e = e || window.event; //浏览器兼容性
+        var elem = e.target || e.srcElement;
+        var id = elem.id;
+        // console.log(id);
+        var num =id.substring(id.indexOf('p')+1);
+        // console.log(num);
+        var $p = $("#panel"+num);
+        // console.log(id);
+        while (elem) {
+            //循环判断至跟节点，防止点击的是div子元素
+            if (elem.id && (elem.id.search('panel') != -1||elem.id.search('flip') != -1)) {
+                // console.log("点击了面板");
+                return;
+            }
+            elem = elem.parentNode;
+        }
+        // console.log($p);
+        var b_objs = new Array();
+        b_objs = getAll();
+        for (var i = 0; i < b_objs.length; i++) {
+            if (b_objs[i].id.search('panel') != -1) {
+                // console.log(b_objs[i].id);
+                $(b_objs[i]).slideUp("slow");
+            }
+        }
+        //点击的不是div或其子元素
+
+    });
+</script>
+加载表格
+<script>
+    $(document).ready(function () {
+        $('#table_example').DataTable({
+            // "scrollY": 1000,
+            // "scrollCollapse": true,
+            // "jQueryUI": true,
+            "searching": false,
+            "pagingType": "simple_numbers",
+            "bScrollCollapse" : true,
+            "bPaginate": true,
+            "bProcessing": true,
+            "aLengthMenu": [ 5, 10, 25, 50],
+            "bLengthChange" : true
+        });
+    });
+</script>
+
+<!--&lt;!&ndash;canvas画布&ndash;&gt;-->
+<!--<script>-->
+
+    <!--var c=document.getElementById("myCanvas1");-->
+    <!--var cxt=c.getContext("2d");-->
+    <!--// cxt.moveTo(10,10);-->
+    <!--// cxt.lineTo(150,50);-->
+    <!--// cxt.stroke();-->
+    <!--var img=document.getElementById("img1");-->
+
+    <!--// img.onload = function() {-->
+        <!--cxt.drawImage(img,10,10);-->
+    <!--// }-->
+
+<!--</script>-->
+
+</body>
+</html>
