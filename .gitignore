@@ -12,6 +12,7 @@
 
 ### IntelliJ IDEA ###
 *.iws
+.idea
 *.ipr
 
 ### NetBeans ###
